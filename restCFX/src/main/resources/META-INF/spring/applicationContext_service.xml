@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:http-conf="http://cxf.apache.org/transports/http/configuration"
+	xmlns:conf-sec="http://cxf.apache.org/configuration/security"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:cxf="http://cxf.apache.org/core" xmlns:jaxws="http://cxf.apache.org/jaxws"
+	xmlns:jaxrs="http://cxf.apache.org/jaxrs"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd
+		http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+        http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+		http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+		http://cxf.apache.org/jaxrs http://cxf.apache.org/schemas/jaxrs.xsd
+		http://cxf.apache.org/transports/http/configuration 
+		http://cxf.apache.org/schemas/configuration/http-conf.xsd">
+		
+     <!-- Load CXF modules from cxf.jar -->
+    <import resource="classpath:META-INF/cxf/cxf.xml"/>
+    <import resource="classpath:META-INF/cxf/cxf-extension-soap.xml"/>
+    <import resource="classpath:META-INF/cxf/cxf-servlet.xml"/>
+    
+    <bean id='jacksonJsonProvider' class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
+	
+	<bean id='jacksonXmlProvider' class="com.fasterxml.jackson.jaxrs.xml.JacksonJaxbXMLProvider" />
+	
+    <bean id="confirmingImpl" class="org.okis.facadeImpl.ConfirmingImpl"/>
+    <bean id="valoresImpl" class="org.okis.facadeImpl.ValoresImpl">
+     <property name="laoDTO" ref="listAccOUT"/>
+     <property name="listaOUT" ref="listBrokerOUT" />
+     <property name="listaBono" ref="listaBonosOUT" />
+     </bean>    
+     
+     <bean id="listAccOUT" class="org.okis.dtos.ListadoAccionesOutDTOImpl" />     
+     <bean id="listBrokerOUT" class="org.okis.dtos.ListadoBrokersOutDTOImpl" />
+     <bean id="listaBonosOUT" class="org.okis.dtos.ListadoBonosOutDTOImpl" />
+     
+      <bean id="operacionesImpl" class="org.okis.facadeImpl.OperacionesBancariasImpl">
+     <property name="listaPrestamo" ref="listaPrestamoOUT"/>
+     <property name="listaProductos" ref="listaProd" />     
+     </bean>
+     
+     <!-- Prestamos -->
+     <bean id="listaPrestamoOUT" class="org.okis.dtos.ListadoPrestamosOutDTOImpl">
+     <property name="prestamodao" ref="prestdao"></property>
+     </bean>
+     
+     <bean id="prestdao" class="org.okis.dao.PrestamoDaoImpl">     
+     <property name="dataSource" ref="dataSource"></property>     
+     </bean>
+     
+	<!-- fin Prestamos -->
+	
+	<!-- inicio Productos -->
+	
+	<bean id="listaProd" class="org.okis.dtos.ListadoProductosOutDTOImpl">	
+	<property name="prodDao"  ref="productDao" ></property>
+	</bean>
+	
+	<bean id="productDao" class= "org.okis.dao.ProductosDaoImpl" >	
+	<property name="dataSource" ref="dataSource"></property>
+	</bean>
+	
+	<!-- Fin productos -->
+     
+    
+     <jaxrs:server address="/rest" id="restServer">
+        <jaxrs:serviceBeans>            
+            <ref bean="confirmingImpl"/>
+            <ref bean="valoresImpl"/> 
+            <ref bean="operacionesImpl"/>           
+        </jaxrs:serviceBeans> 
+        <jaxrs:providers>
+			<ref bean='jacksonJsonProvider' />
+			<ref bean='jacksonXmlProvider' />
+		</jaxrs:providers>     
+        <jaxrs:extensionMappings>          
+            <entry key="json" value="application/json"/> 
+             <entry key="xml" value="application/xml" />        
+        </jaxrs:extensionMappings>
+    </jaxrs:server>	
+    
+    
+    
+  
+</beans>
