@@ -22,6 +22,7 @@ public class ListadoBonosOutDTOImpl implements Serializable, ListadoBonosOutDTO 
 	public void setListaBonos(List<Bonos> listaBonos) {
 		this.listaBonos = listaBonos;
 	}
+	
 
 	@Override
 	public List<Bonos> listaBonos(ListadoBonosInDTO in) {
