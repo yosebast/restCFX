@@ -28,7 +28,13 @@
 	
 	<bean id='jacksonXmlProvider' class="com.fasterxml.jackson.jaxrs.xml.JacksonJaxbXMLProvider" />
 	
-    <bean id="confirmingImpl" class="org.okis.facadeImpl.ConfirmingImpl"/>
+    <bean id="confirmingImpl" class="org.okis.facadeImpl.ConfirmingImpl">
+    <property name="listadoOut" ref="listaOfficina"/>    
+    </bean>
+    
+    <bean id="listaOfficina" class="org.okis.dtos.ListadoOficinasOutDTOImpl"/>
+    
+    
     <bean id="valoresImpl" class="org.okis.facadeImpl.ValoresImpl">
      <property name="laoDTO" ref="listAccOUT"/>
      <property name="listaOUT" ref="listBrokerOUT" />
@@ -66,13 +72,37 @@
 	</bean>
 	
 	<!-- Fin productos -->
+	
+	<!-- inicio operaciones compra venta -->
+	
+ 	<bean id="compraventaImpl" class="org.okis.facadeImpl.CompraVentaImpl" >
+ 	<property name="lisCategorias" ref="compraventaOutDTO"></property>
+ 	</bean>
+ 	
+ 	<bean id="compraventaOutDTO" class="org.okis.dtos.ListadoCategoriasOutDTOImpl">
+ 	<property name="categoriaService" ref="categService"></property> 	
+ 	</bean>
+ 	
+ 	<bean id="categService" class="org.okis.mapper.CategoriaServiceImpl"> 	
+ 	<property name="daoCategoria" ref="categoriadao"></property>
+ 	</bean>
+ 	
+ 	<bean id="categoriadao" class="org.okis.dao.CategoriaDaoImpl"> 	
+ 	<property name="dataSource" ref="dataSource"></property> 	
+ 	</bean>
+ 	
+ 	
+	
+	<!-- fin operaciones Compra venta -->
      
+    <!-- Una vez tenemos esto dado de alta añadimos un servidor de JAXRS  y el bean o beans que deseamos gestionar a traves de él.-->
     
      <jaxrs:server address="/rest" id="restServer">
         <jaxrs:serviceBeans>            
             <ref bean="confirmingImpl"/>
             <ref bean="valoresImpl"/> 
-            <ref bean="operacionesImpl"/>           
+            <ref bean="operacionesImpl"/> 
+            <ref bean="compraventaImpl"/>          
         </jaxrs:serviceBeans> 
         <jaxrs:providers>
 			<ref bean='jacksonJsonProvider' />

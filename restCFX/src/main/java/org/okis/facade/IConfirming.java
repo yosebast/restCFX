@@ -1,5 +1,7 @@
 package org.okis.facade;
 
+import java.util.List;
+
 import javax.jws.WebResult;
 import javax.jws.WebService;
 import javax.ws.rs.Consumes;
@@ -14,12 +16,13 @@ import org.okis.dtos.ListadoAnticipoOutDTO;
 import org.okis.dtos.ListadoCuentasInDTO;
 import org.okis.dtos.ListadoCuentasOutDTO;
 import org.okis.dtos.ListadoOficinasOutDTO;
+import org.okis.dtos.ListadoOficinasOutDTOImpl;
 
 
 @Path("/confirming/")
 @Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.APPLICATION_JSON)
-//@Produces(MediaType.APPLICATION_XML)
+//@Produces(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_XML)
 //@WebService
 public interface IConfirming {
 
@@ -38,9 +41,8 @@ public interface IConfirming {
 
 	
 	@POST
-	@Path("/obtenerOficinas/")
-	@WebResult(name="ListadoOficinasOutDTO")
-	public ListadoOficinasOutDTO obtieneListdoOficinas(Oficina oficina) throws Exception;
+	@Path("/obtenerOficinas/")	
+	public ListadoOficinasOutDTOImpl obtieneListdoOficinas(Oficina oficina) throws Exception;
 	
 }
 

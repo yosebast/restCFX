@@ -8,12 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.log4j.Logger;
 import org.okis.beans.Productos;
 import org.okis.dao.IProductosDao;
 import org.okis.mapper.ProductoMapper;
 
 public class ListadoProductosOutDTOImpl implements ListadoProductosOutDTO {
 	
+	Logger logger = Logger.getLogger(ListadoProductosOutDTOImpl.class);
 	
 	private IProductosDao productDao;
 
@@ -24,6 +26,8 @@ public class ListadoProductosOutDTOImpl implements ListadoProductosOutDTO {
 	@Override
 	public List<ProductoMapper> listadoProductos() {
 		// TODO Auto-generated method stub
+		
+		logger.debug("entra al DTO");
 		
 		List<Productos> listadoProductos = productDao.listadoProductos();
 		

@@ -10,20 +10,26 @@ import org.okis.dtos.ListadoAnticipoOutDTO;
 import org.okis.dtos.ListadoCuentasInDTO;
 import org.okis.dtos.ListadoCuentasOutDTO;
 import org.okis.dtos.ListadoOficinasOutDTO;
+import org.okis.dtos.ListadoOficinasOutDTOImpl;
 import org.okis.facade.IConfirming;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 
-@Service
 public class ConfirmingImpl implements IConfirming {
 	
 	
-	Cuentas cuenta;
+	Cuentas cuenta;	
 	
-	@Autowired
 	ListadoOficinasOutDTO listadoOut;
+	
+	public void setListadoOut(ListadoOficinasOutDTO listadoOut){
+		this.listadoOut = listadoOut;
+	}
+	
+	
 	
 	
 	@Override
@@ -66,55 +72,15 @@ public class ConfirmingImpl implements IConfirming {
 	
 	
 
-	@Override
-	public ListadoOficinasOutDTO obtieneListdoOficinas(Oficina oficina) throws Exception {
-		
-		
-		List<Oficina> listaOficinas = new ArrayList<Oficina>();		
-		
-		List<Oficina> listadoOficinas = new ArrayList<Oficina>();
-		
-		Oficina oficinas1 = new Oficina(56, "calle talisio 2", 28014);		
-
-		listadoOficinas.add(oficinas1);
-		
-		Oficina oficinas2 =new Oficina(45, "calle prudencio alvaro 3", 28027);		
-
-		listadoOficinas.add(oficinas2);
-		
-		Oficina oficinas3 = new Oficina(2, "calle doctor vallejo 5", 33056);
-
-		listadoOficinas.add(oficinas3);
-		
 	
-		if(oficina.getCodPostal() != null){
+	public ListadoOficinasOutDTOImpl obtieneListdoOficinas(Oficina oficina) throws Exception {
 		
-		Integer codPostal = oficina.getCodPostal();
 		
-		for(Object ofi : listadoOficinas){
-			
-			Oficina off = ((Oficina)ofi); 
-			
-			if(codPostal == off.getCodPostal() ||  (((Oficina)ofi).getCodPostal()).toString().contains(codPostal.toString())){
-				
-				listaOficinas.add(off);
-			
-			}
-			
-		}
-		
-		//como esta clase esta siendo manejada por spring desde su contexto   entonces la tengo que inyectar y no hacer un new como en el resto de listados
-		//ademas al listadoOut  inyectado le inyecto la lista por setter  lo podria tambien hacer sin anotaciones  solamente definiendo el bean en el contenedor
-		
-		listadoOut.setOficinas(listaOficinas);		
-		
-		}
-		
-		return listadoOut;
+		listadoOut.listaOficinas(oficina);
+		 
+		 return (ListadoOficinasOutDTOImpl) listadoOut;
+	
 	}
-	
-	
-	
 	
 	
 }

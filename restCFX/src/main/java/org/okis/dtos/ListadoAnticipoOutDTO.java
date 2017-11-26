@@ -1,16 +1,14 @@
 package org.okis.dtos;
 
-import java.io.Serializable;
 
 
 import org.springframework.stereotype.Component;
 
 
 @Component
-public class ListadoAnticipoOutDTO implements Serializable {
+public class ListadoAnticipoOutDTO  {
 	
-	private static final long serialVersionUID = 1L;
-
+	
 	private String nif;
 
 	private String descripcion;
