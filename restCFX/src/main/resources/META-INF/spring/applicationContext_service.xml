@@ -95,6 +95,24 @@
 	
 	<!-- fin operaciones Compra venta -->
      
+     <!-- inicio para la gestion de usuarios -->
+    
+    <bean id="GestionUsuImpl" class="org.okis.facadeImpl.GestionUsuariosImpl">    
+    <property name="listadosUsuarios" ref="listUsuOutImpl"></property>    
+    </bean>     
+    
+    <bean id="listUsuOutImpl" class="org.okis.dtos.ListadoUsuariosOutDTOImpl">
+    <property name="ususer" ref="usuarioServicio"></property>    
+    </bean>     
+     
+     <bean id="usuarioServicio" class="org.okis.mapper.UsuariosService">
+     <property name="usuDao" ref="daoUsu"/>     
+     </bean>
+     
+     <bean id="daoUsu" class="org.okis.dao.UsuariosDaoImpl">
+     <property name="dataSource" ref="dataSource"/>
+     </bean>
+     
     <!-- Una vez tenemos esto dado de alta añadimos un servidor de JAXRS  y el bean o beans que deseamos gestionar a traves de él.-->
     
      <jaxrs:server address="/rest" id="restServer">
@@ -102,7 +120,8 @@
             <ref bean="confirmingImpl"/>
             <ref bean="valoresImpl"/> 
             <ref bean="operacionesImpl"/> 
-            <ref bean="compraventaImpl"/>          
+            <ref bean="compraventaImpl"/>
+            <ref bean="GestionUsuImpl"/>          
         </jaxrs:serviceBeans> 
         <jaxrs:providers>
 			<ref bean='jacksonJsonProvider' />
