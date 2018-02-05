@@ -113,6 +113,21 @@
      <property name="dataSource" ref="dataSource"/>
      </bean>
      
+     <bean id="GestionProductos" class="org.okis.facadeImpl.GestionProductosImpl">     
+     <property name="servicioProducto" ref="serviciosProductos"/>    
+     </bean>
+     
+     <bean id="serviciosProductos" class="org.okis.mapper.ProductoServicio">
+     <property name="daoProducto" ref="productDao" />     
+     </bean>
+     
+     
+     <!-- seccion addin -->
+     
+     <bean id="dtoMapperManager" class="org.okis.dtos.DtoMapperManagerImpl" />
+     
+     
+     
     <!-- Una vez tenemos esto dado de alta añadimos un servidor de JAXRS  y el bean o beans que deseamos gestionar a traves de él.-->
     
      <jaxrs:server address="/rest" id="restServer">
@@ -121,7 +136,11 @@
             <ref bean="valoresImpl"/> 
             <ref bean="operacionesImpl"/> 
             <ref bean="compraventaImpl"/>
-            <ref bean="GestionUsuImpl"/>          
+            <ref bean="GestionUsuImpl"/>
+            <ref bean="GestionProductos"/>
+           <!--  <ref bean="addinRestService" />-->
+            
+                      
         </jaxrs:serviceBeans> 
         <jaxrs:providers>
 			<ref bean='jacksonJsonProvider' />
